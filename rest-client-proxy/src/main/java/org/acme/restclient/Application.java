@@ -1,22 +1,27 @@
 package org.acme.restclient;
 
+import java.net.URI;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import io.quarkus.runtime.StartupEvent;
-import org.jboss.resteasy.client.jaxrs.ProxyBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class Application {
-    public void onStart(@Observes StartupEvent event) {
-        ResteasyClient client = (ResteasyClient) ResteasyClientBuilder.newBuilder().build();
-        ResteasyWebTarget target = client.target("http://www.my-service.com");
-        target.setChunked(false);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
-        MyService api = ProxyBuilder.builder(MyService.class, target).build();
+    public void onStart(@Observes StartupEvent event) {
+        LOGGER.info("onStart");
+
+        MyService api = RestClientBuilder.newBuilder()
+            .baseUri(URI.create("http://www.my-service.com"))
+            .register(new JacksonJaxbJsonProvider())
+            .build(MyService.class);
+
         api.sendMessage("bla", new MyMessage());
     }
 }

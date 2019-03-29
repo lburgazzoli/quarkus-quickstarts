@@ -3,7 +3,6 @@ package org.acme.restclient;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The superclass of all outgoing messages.
@@ -11,13 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class MyMessage implements Serializable {
     private static final long serialVersionUID = -5958829164103569292L;
 
-    @JsonProperty("chat_id")
     protected String chatId;
 
-    @JsonProperty("disable_notification")
     protected Boolean disableNotification;
 
-    @JsonProperty("reply_to_message_id")
     protected Long replyToMessageId;
 
     public MyMessage() {
