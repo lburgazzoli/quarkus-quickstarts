@@ -23,6 +23,7 @@
         <module>using-spring-di</module>
         <module>using-jwt-rbac</module>
         <module>rest-client</module>
+        <module>rest-client-proxy</module>
         <module>kafka-quickstart</module>
         <module>rest-json</module>
         <module>getting-started-knative</module>
